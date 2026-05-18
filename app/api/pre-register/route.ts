@@ -1,10 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { neon } from '@neondatabase/serverless'
 
-const sql = neon(process.env.DATABASE_URL!)
+function getSql() {
+  const url = process.env.DATABASE_URL
+  if (!url) throw new Error('DATABASE_URL is not set')
+  return neon(url)
+}
 
 export async function POST(req: NextRequest) {
   try {
+    const sql = getSql()
     const { name, email, phone, favoriteGame, utmSource } = await req.json()
 
     if (!name || !email) {
@@ -64,6 +69,8 @@ export async function POST(req: NextRequest) {
 
 export async function GET() {
   try {
+    const sql = getSql()
+
     // Ensure table exists
     await sql`
       CREATE TABLE IF NOT EXISTS pre_registrations (
