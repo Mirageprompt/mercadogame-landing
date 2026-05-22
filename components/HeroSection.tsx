@@ -3,7 +3,7 @@ import { motion, useAnimation } from "framer-motion"
 import { useEffect, useState } from "react"
 import { Shield, Zap, Trophy, ArrowRight, ChevronDown } from "lucide-react"
 
-const GAMES = ["Free Fire", "Valorant", "CS2", "LOL", "Fortnite"]
+const GAMES = ["OneState RP", "RP"]
 
 function TypingText({ words }: { words: string[] }) {
   const [index, setIndex] = useState(0)
@@ -50,6 +50,8 @@ function TypingText({ words }: { words: string[] }) {
   )
 }
 
+const BASE_GAMERS = 500
+
 function CounterBadge() {
   const [count, setCount] = useState<number | null>(null)
   const [displayCount, setDisplayCount] = useState(0)
@@ -57,8 +59,8 @@ function CounterBadge() {
   useEffect(() => {
     fetch('/api/pre-register')
       .then((r) => r.json())
-      .then((d) => setCount(d.count ?? 0))
-      .catch(() => setCount(127))
+      .then((d) => setCount(BASE_GAMERS + (d.count ?? 0)))
+      .catch(() => setCount(BASE_GAMERS))
   }, [])
 
   useEffect(() => {

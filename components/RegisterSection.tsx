@@ -5,13 +5,7 @@ import { User, Mail, Phone, Gamepad2, CheckCircle, AlertCircle, Loader2, Rocket 
 import confetti from "canvas-confetti"
 
 const GAMES = [
-  "Free Fire",
-  "CS2",
-  "Valorant",
-  "League of Legends",
-  "FIFA",
-  "Fortnite",
-  "Outros",
+  "OneState RP",
 ]
 
 function formatPhone(value: string) {
@@ -24,8 +18,8 @@ function formatPhone(value: string) {
 }
 
 function Countdown() {
-  // Launch date: ~60 days from today
-  const launchDate = new Date('2026-07-17T00:00:00')
+  // Launch date: 15 days from today
+  const launchDate = new Date('2026-06-06T00:00:00')
   const [timeLeft, setTimeLeft] = useState({
     days: 0, hours: 0, minutes: 0, seconds: 0,
   })
@@ -121,7 +115,7 @@ function fireConfetti() {
 
 export function RegisterSection() {
   const [form, setForm] = useState({
-    name: '', email: '', phone: '', favoriteGame: '',
+    name: '', email: '', phone: '', favoriteGame: 'OneState RP',
   })
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
@@ -135,8 +129,10 @@ export function RegisterSection() {
     const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!form.email || !emailRe.test(form.email))
       errs.email = 'Digite um email válido'
-    if (form.phone && form.phone.replace(/\D/g, '').length < 10)
-      errs.phone = 'Telefone inválido'
+    if (!form.phone || form.phone.replace(/\D/g, '').length < 10)
+      errs.phone = 'Digite seu telefone com DDD'
+    if (!form.favoriteGame)
+      errs.favoriteGame = 'Selecione um jogo'
     return errs
   }
 
@@ -394,7 +390,7 @@ export function RegisterSection() {
             {/* Phone */}
             <div>
               <label className="block text-xs font-semibold text-slate-400 mb-1.5 ml-1 uppercase tracking-wide">
-                Telefone <span className="text-slate-600 font-normal">(opcional)</span>
+                Telefone *
               </label>
               <div className="relative">
                 <Phone size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
@@ -419,32 +415,19 @@ export function RegisterSection() {
             {/* Game */}
             <div>
               <label className="block text-xs font-semibold text-slate-400 mb-1.5 ml-1 uppercase tracking-wide">
-                Jogo favorito <span className="text-slate-600 font-normal">(opcional)</span>
+                Jogo *
               </label>
-              <div className="relative">
-                <Gamepad2 size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
-                <select
-                  value={form.favoriteGame}
-                  onChange={(e) => handleChange('favoriteGame', e.target.value)}
-                  className={`${inputBase} pl-10 appearance-none cursor-pointer`}
-                  style={{
-                    background: 'rgba(15,15,26,0.9)',
-                    border: '1px solid rgba(124,58,237,0.3)',
-                    color: form.favoriteGame ? '#E2E8F0' : 'rgba(226,232,240,0.3)',
-                  }}
-                >
-                  <option value="" disabled>Selecione um jogo</option>
-                  {GAMES.map((g) => (
-                    <option key={g} value={g} style={{ background: '#0F0F1A', color: '#E2E8F0' }}>
-                      {g}
-                    </option>
-                  ))}
-                </select>
-                <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
-                  <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
-                    <path d="M1 1L6 6L11 1" stroke="#A855F7" strokeWidth="2" strokeLinecap="round"/>
-                  </svg>
-                </div>
+              <div
+                className={`${inputBase} pl-10 flex items-center cursor-default`}
+                style={{
+                  background: 'rgba(15,15,26,0.9)',
+                  border: `1px solid ${errors.favoriteGame ? 'rgba(239,68,68,0.6)' : 'rgba(124,58,237,0.3)'}`,
+                  color: '#E2E8F0',
+                  position: 'relative',
+                }}
+              >
+                <Gamepad2 size={16} style={{ position: 'absolute', left: 14, color: '#A855F7' }} />
+                <span style={{ paddingLeft: 8, color: '#C084FC', fontWeight: 600 }}>🎮 OneState RP</span>
               </div>
             </div>
 
