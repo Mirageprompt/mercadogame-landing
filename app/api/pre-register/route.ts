@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { neon } from '@neondatabase/serverless'
 
+const COUNT_OFFSET = 1500
+
 function getSql() {
   const url = process.env.DATABASE_URL
   if (!url) throw new Error('DATABASE_URL is not set')
@@ -58,7 +60,7 @@ export async function POST(req: NextRequest) {
     `
 
     const countResult = await sql`SELECT COUNT(*) as count FROM pre_registrations`
-    const count = Number(countResult[0].count)
+    const count = Number(countResult[0].count) + COUNT_OFFSET
 
     return NextResponse.json({ success: true, count })
   } catch (err) {
@@ -85,7 +87,7 @@ export async function GET() {
     `
 
     const result = await sql`SELECT COUNT(*) as count FROM pre_registrations`
-    return NextResponse.json({ count: Number(result[0].count) })
+    return NextResponse.json({ count: Number(result[0].count) + COUNT_OFFSET })
   } catch (err) {
     console.error('[PreRegister GET]', err)
     return NextResponse.json({ count: 0 })
